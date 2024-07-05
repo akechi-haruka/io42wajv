@@ -1,0 +1,15 @@
+LIBRARY io42wajv
+
+EXPORTS
+    WAJVOpen
+    WAJVGetStatus
+    WAJVSetFunctionSettings
+    WAJVUpdate
+    WAJVGetInput
+    WAJVGetLibraryVersion
+    WAJVClose
+    WAJVEndUpdate
+    WAJVSetOutput
+    WAJVBeginUpdate
+    WAJVGetNodeCount
+    WAJVSetPLParm
