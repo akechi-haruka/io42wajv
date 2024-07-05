@@ -129,11 +129,7 @@ __stdcall int WAJVEndUpdate(){
     if (config->coin_chute > -1){
         input_emu->Coin[0].Count = report.chutes[config->coin_chute];
     } else {
-        int cbtn = config->test_switch;
-        bool coin_down = false;
-        if (cbtn > -1) {
-            coin_down = shared_get_io4_btn(cbtn);
-        }
+        bool coin_down = GetAsyncKeyState(config->coin_keyboard_button) & 0x8000;
         if (coin_down){
             if (!coin_was_down){
                 input_emu->Coin[0].Status = WAJVCoinBusy;
