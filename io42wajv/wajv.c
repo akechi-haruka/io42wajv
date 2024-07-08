@@ -11,6 +11,7 @@ struct JVSUSBReportIn report;
 
 static bool coin_was_down = false;
 static bool test_was_down = false;
+static bool service_was_down = false;
 
 void wajv_init(struct io42wajv_config* cfg){
     config = cfg;
@@ -149,6 +150,18 @@ __stdcall int WAJVEndUpdate(){
                 input_emu->SwIn[x][y] = shared_get_io4_btn(btn);
             }
         }
+    }
+
+    if (input_emu->SwIn[0][1]){
+        if (!service_was_down){
+            input_emu->Service[0].Count = 1;
+            service_was_down = true;
+        } else {
+            input_emu->Service[0].Count = 0;
+        }
+    } else {
+        input_emu->Service[0].Count = 0;
+        service_was_down = false;
     }
 
     for (int i = 0; i < 4; i++){
