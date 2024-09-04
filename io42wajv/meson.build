@@ -6,6 +6,7 @@ io42wajv = shared_library(
     c_pch : '../precompiled.h',
     vs_module_defs : 'exports.def',
     link_with : [
+        segapi.get_variable('api_lib')
     ],
     dependencies : [
         hidapi_dep

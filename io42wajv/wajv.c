@@ -1,5 +1,6 @@
 #include <windows.h>
 #include <stdint.h>
+#include <subprojects/segapi/api/api.h>
 
 #include "io42wajv/wajv.h"
 #include "util/dprintf.h"
@@ -114,6 +115,7 @@ __stdcall int WAJVEndUpdate(){
     if (tbtn > -1) {
         test_down = shared_get_io4_btn(tbtn);
     }
+    test_down = test_down || api_get_and_clear_test();
     if (config->test_switch_mode == 1) {
         if (test_down) {
             if (!test_was_down) {
@@ -131,6 +133,10 @@ __stdcall int WAJVEndUpdate(){
         input_emu->Coin[0].Count = report.chutes[config->coin_chute];
     } else {
         bool coin_down = (GetAsyncKeyState(config->coin_keyboard_button) & 0x8000) != 0;
+        int api_credits = api_get_and_clear_credits();
+        if (api_credits > 0){
+            input_emu->Coin[0].Count += api_credits;
+        }
         if (coin_down){
             if (!coin_was_down){
                 input_emu->Coin[0].Count++;
@@ -152,7 +158,7 @@ __stdcall int WAJVEndUpdate(){
         }
     }
 
-    if (input_emu->SwIn[0][1]){
+    if (input_emu->SwIn[0][1] || api_get_and_clear_service()){
         if (!service_was_down){
             input_emu->Service[0].Count = 1;
             service_was_down = true;
